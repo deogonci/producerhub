@@ -3,23 +3,30 @@ package com.divine.producerhub.controller;
 import com.divine.producerhub.model.Beat;
 import com.divine.producerhub.model.BeatStatus;
 import com.divine.producerhub.service.BeatService;
+import com.divine.producerhub.service.FileStorageService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class BeatController {
 
     private final BeatService beatService;
+    private final FileStorageService fileStorageService;
 
-    public BeatController(BeatService beatService) {
+    public BeatController(
+            BeatService beatService,
+            FileStorageService fileStorageService
+    ) {
         this.beatService = beatService;
+        this.fileStorageService = fileStorageService;
     }
 
     @GetMapping("/beats")
@@ -50,12 +57,17 @@ public class BeatController {
     public String saveBeat(
             @Valid @ModelAttribute("beat") Beat beat,
             BindingResult bindingResult,
+            @RequestParam("audioFile") MultipartFile audioFile,
             Model model
     ) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("statuses", BeatStatus.values());
+            prepareForm(model, "Add Beat", "/beats");
 
             return "beats/form";
+        }
+
+        if (!audioFile.isEmpty()) {
+            beat.setAudioFilename(fileStorageService.store(audioFile));
         }
 
         beatService.saveBeat(beat);
@@ -69,9 +81,8 @@ public class BeatController {
             Model model
     ) {
         model.addAttribute("beat", beatService.getBeatById(id));
-        model.addAttribute("statuses", BeatStatus.values());
-        model.addAttribute("pageTitle", "Edit Beat");
-        model.addAttribute("formAction", "/beats/" + id);
+
+        prepareForm(model, "Edit Beat", "/beats/" + id);
 
         return "beats/form";
     }
@@ -81,14 +92,17 @@ public class BeatController {
             @PathVariable Long id,
             @Valid @ModelAttribute("beat") Beat beat,
             BindingResult bindingResult,
+            @RequestParam("audioFile") MultipartFile audioFile,
             Model model
     ) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("statuses", BeatStatus.values());
-            model.addAttribute("pageTitle", "Edit Beat");
-            model.addAttribute("formAction", "/beats/" + id);
+            prepareForm(model, "Edit Beat", "/beats/" + id);
 
             return "beats/form";
+        }
+
+        if (!audioFile.isEmpty()) {
+            beat.setAudioFilename(fileStorageService.store(audioFile));
         }
 
         beatService.updateBeat(id, beat);
@@ -111,5 +125,15 @@ public class BeatController {
         beatService.deleteBeat(id);
 
         return "redirect:/beats";
+    }
+
+    private void prepareForm(
+            Model model,
+            String pageTitle,
+            String formAction
+    ) {
+        model.addAttribute("statuses", BeatStatus.values());
+        model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("formAction", formAction);
     }
 }

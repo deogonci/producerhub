@@ -18,16 +18,33 @@
         <h1 th:text="${pageTitle}">Beat Form</h1>
         <p>Enter the information for your new beat.</p>
 
-        <form method="post" th:action="${formAction}" th:object="${beat}">
+        <form method="post" enctype="multipart/form-data" th:action="${formAction}" th:object="${beat}">
             <div class="form-group">
                 <label for="title">Title</label>
+
                 <input
                     id="title"
                     type="text"
                     th:field="*{title}"
                     placeholder="e.g. Midnight Drive"
                 >
+
                 <span class="error" th:errors="*{title}"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="audioFile">Audio file</label>
+
+                <input
+                    id="audioFile"
+                    name="audioFile"
+                    type="file"
+                    accept=".mp3,.wav,.m4a,.ogg,audio/*"
+                >
+
+                <small th:if="${beat.audioFilename != null}">
+                    Leave empty to keep the existing audio file.
+                </small>
             </div>
 
             <div class="form-group">

@@ -172,3 +172,13 @@ button {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+audio {
+    width: 230px;
+    height: 36px;
+}
+
+small,
+.muted {
+    color: #888888;
+}

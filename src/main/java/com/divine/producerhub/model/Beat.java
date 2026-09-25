@@ -36,6 +36,7 @@ public class Beat {
     @NotNull
     @Enumerated(EnumType.STRING)
     private BeatStatus status;
+    private String audioFilename;
 
     public Beat() {
     }
@@ -96,5 +97,13 @@ public class Beat {
 
     public void setStatus(BeatStatus status) {
         this.status = status;
+    }
+
+    public String getAudioFilename() {
+        return audioFilename;
+    }
+
+    public void setAudioFilename(String audioFilename) {
+        this.audioFilename = audioFilename;
     }
 }

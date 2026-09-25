@@ -40,6 +40,10 @@ public class BeatService {
         existingBeat.setGenre(updatedBeat.getGenre());
         existingBeat.setStatus(updatedBeat.getStatus());
 
+        if (updatedBeat.getAudioFilename() != null) {
+            existingBeat.setAudioFilename(updatedBeat.getAudioFilename());
+        }
+
         return beatRepository.save(existingBeat);
     }
 

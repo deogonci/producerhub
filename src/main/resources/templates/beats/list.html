@@ -46,6 +46,7 @@
                     <th>Genre</th>
                     <th>Status</th>
                     <th>Actions</th>
+                    <th>Audio</th>
                 </tr>
             </thead>
 
@@ -69,6 +70,21 @@
                             th:href="@{/beats/{id}/delete(id=${beat.id})}">
                             Delete
                         </a>
+                    </td>
+
+                    <td>
+                        <audio
+                            th:if="${beat.audioFilename != null}"
+                            controls
+                            preload="none"
+                            th:src="@{/uploads/{filename}(filename=${beat.audioFilename})}">
+                        </audio>
+
+                        <span
+                            class="muted"
+                            th:unless="${beat.audioFilename != null}">
+                            No audio
+                        </span>
                     </td>
                 </tr>
             </tbody>

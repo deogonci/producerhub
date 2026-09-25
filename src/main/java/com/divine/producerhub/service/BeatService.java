@@ -46,4 +46,16 @@ public class BeatService {
         Beat beat = getBeatById(id);
         beatRepository.delete(beat);
     }
+
+    public List<Beat> searchBeats(String search) {
+        if (search == null || search.isBlank()) {
+            return getAllBeats();
+        }
+
+        return beatRepository
+                .findByTitleContainingIgnoreCaseOrGenreContainingIgnoreCase(
+                        search,
+                        search
+                );
+    }
 }

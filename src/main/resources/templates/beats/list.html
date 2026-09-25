@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 
+<form class="search-form" method="get" action="/beats">
+    <input
+        type="search"
+        name="search"
+        placeholder="Search by title or genre"
+        th:value="${search}"
+    >
+
+    <button type="submit">Search</button>
+
+    <a class="clear-link" href="/beats">Clear</a>
+</form>
+
 <body>
     <main>
         <div class="page-header">

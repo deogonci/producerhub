@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class BeatController {
@@ -22,8 +23,12 @@ public class BeatController {
     }
 
     @GetMapping("/beats")
-    public String showBeats(Model model) {
-        model.addAttribute("beats", beatService.getAllBeats());
+    public String showBeats(
+            @RequestParam(required = false) String search,
+            Model model
+    ) {
+        model.addAttribute("beats", beatService.searchBeats(search));
+        model.addAttribute("search", search);
 
         return "beats/list";
     }

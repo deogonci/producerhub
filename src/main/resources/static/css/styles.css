@@ -125,3 +125,20 @@ button {
     color: white;
     background-color: #d93636;
 }
+
+.search-form {
+    display: flex;
+    gap: 12px;
+    max-width: 600px;
+    margin: 24px 0;
+}
+
+.search-form input {
+    flex: 1;
+}
+
+.clear-link {
+    padding: 12px 0;
+    color: #aaaaaa;
+    background: none;
+}

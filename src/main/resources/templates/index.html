@@ -11,10 +11,36 @@
 
 <body>
     <main>
-        <h1>ProducerHub</h1>
-        <p>Manage your beats, artists, licences and sales.</p>
+        <div class="page-header">
+            <div>
+                <h1>ProducerHub</h1>
+                <p>Manage your beats, artists, licences and sales.</p>
+            </div>
 
-        <a href="/beats">View my beats</a>
+            <a href="/beats">View my beats</a>
+        </div>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <span>Total beats</span>
+                <strong th:text="${totalBeats}">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span>Available</span>
+                <strong th:text="${availableBeats}">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span>Licensed</span>
+                <strong th:text="${licensedBeats}">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span>Sold</span>
+                <strong th:text="${soldBeats}">0</strong>
+            </article>
+        </section>
     </main>
 </body>
 </html>

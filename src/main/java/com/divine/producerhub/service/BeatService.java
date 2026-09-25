@@ -1,6 +1,7 @@
 package com.divine.producerhub.service;
 
 import com.divine.producerhub.model.Beat;
+import com.divine.producerhub.model.BeatStatus;
 import com.divine.producerhub.repository.BeatRepository;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +58,13 @@ public class BeatService {
                         search,
                         search
                 );
+    }
+
+    public long countAllBeats() {
+        return beatRepository.count();
+    }
+
+    public long countBeatsByStatus(BeatStatus status) {
+        return beatRepository.countByStatus(status);
     }
 }

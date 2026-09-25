@@ -1,6 +1,7 @@
 package com.divine.producerhub.repository;
 
 import com.divine.producerhub.model.Beat;
+import com.divine.producerhub.model.BeatStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface BeatRepository extends JpaRepository<Beat, Long> {
             String title,
             String genre
     );
+
+    long countByStatus(BeatStatus status);
 }

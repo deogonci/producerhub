@@ -32,6 +32,7 @@
                     <th>Key</th>
                     <th>Genre</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
 
@@ -42,6 +43,20 @@
                     <td th:text="${beat.musicalKey}">C Minor</td>
                     <td th:text="${beat.genre}">Trap</td>
                     <td th:text="${beat.status}">AVAILABLE</td>
+
+                    <td>
+                        <a
+                            class="action-link"
+                            th:href="@{/beats/{id}/edit(id=${beat.id})}">
+                            Edit
+                        </a>
+
+                        <a
+                            class="delete-link"
+                            th:href="@{/beats/{id}/delete(id=${beat.id})}">
+                            Delete
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>

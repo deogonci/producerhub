@@ -107,3 +107,21 @@ button {
     margin-top: 6px;
     color: #ff6b6b;
 }
+
+.action-link {
+    padding: 0;
+    color: #b8ff3d;
+    background: none;
+}
+
+.delete-link {
+    margin-left: 14px;
+    padding: 0;
+    color: #ff6b6b;
+    background: none;
+}
+
+.delete-button {
+    color: white;
+    background-color: #d93636;
+}

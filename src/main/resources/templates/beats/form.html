@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Add Beat | ProducerHub</title>
+    <title th:text="${pageTitle + ' | ProducerHub'}">
+        ProducerHub
+    </title>
 
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -13,10 +15,10 @@
     <main class="form-page">
         <a class="back-link" href="/beats">← Back to beats</a>
 
-        <h1>Add Beat</h1>
+        <h1 th:text="${pageTitle}">Beat Form</h1>
         <p>Enter the information for your new beat.</p>
 
-        <form method="post" action="/beats" th:object="${beat}">
+        <form method="post" th:action="${formAction}" th:object="${beat}">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input

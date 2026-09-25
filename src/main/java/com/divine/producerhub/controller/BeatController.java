@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class BeatController {
@@ -34,6 +35,8 @@ public class BeatController {
 
         model.addAttribute("beat", beat);
         model.addAttribute("statuses", BeatStatus.values());
+        model.addAttribute("pageTitle", "Add Beat");
+        model.addAttribute("formAction", "/beats");
 
         return "beats/form";
     }
@@ -51,6 +54,56 @@ public class BeatController {
         }
 
         beatService.saveBeat(beat);
+
+        return "redirect:/beats";
+    }
+
+    @GetMapping("/beats/{id}/edit")
+    public String showEditBeatForm(
+            @PathVariable Long id,
+            Model model
+    ) {
+        model.addAttribute("beat", beatService.getBeatById(id));
+        model.addAttribute("statuses", BeatStatus.values());
+        model.addAttribute("pageTitle", "Edit Beat");
+        model.addAttribute("formAction", "/beats/" + id);
+
+        return "beats/form";
+    }
+
+    @PostMapping("/beats/{id}")
+    public String updateBeat(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("beat") Beat beat,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("statuses", BeatStatus.values());
+            model.addAttribute("pageTitle", "Edit Beat");
+            model.addAttribute("formAction", "/beats/" + id);
+
+            return "beats/form";
+        }
+
+        beatService.updateBeat(id, beat);
+
+        return "redirect:/beats";
+    }
+
+    @GetMapping("/beats/{id}/delete")
+    public String showDeleteConfirmation(
+            @PathVariable Long id,
+            Model model
+    ) {
+        model.addAttribute("beat", beatService.getBeatById(id));
+
+        return "beats/delete";
+    }
+
+    @PostMapping("/beats/{id}/delete")
+    public String deleteBeat(@PathVariable Long id) {
+        beatService.deleteBeat(id);
 
         return "redirect:/beats";
     }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Beat | ProducerHub</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <main class="form-page">
+        <a class="back-link" href="/beats">← Back to beats</a>
+
+        <h1>Add Beat</h1>
+        <p>Enter the information for your new beat.</p>
+
+        <form method="post" action="/beats" th:object="${beat}">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input
+                    id="title"
+                    type="text"
+                    th:field="*{title}"
+                    placeholder="e.g. Midnight Drive"
+                >
+                <span class="error" th:errors="*{title}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="bpm">BPM</label>
+                <input
+                    id="bpm"
+                    type="number"
+                    min="30"
+                    max="300"
+                    th:field="*{bpm}"
+                >
+                <span class="error" th:errors="*{bpm}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="musicalKey">Musical key</label>
+                <input
+                    id="musicalKey"
+                    type="text"
+                    th:field="*{musicalKey}"
+                    placeholder="e.g. F# Minor"
+                >
+                <span class="error" th:errors="*{musicalKey}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="genre">Genre</label>
+                <input
+                    id="genre"
+                    type="text"
+                    th:field="*{genre}"
+                    placeholder="e.g. Trap"
+                >
+                <span class="error" th:errors="*{genre}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" th:field="*{status}">
+                    <option
+                        th:each="statusOption : ${statuses}"
+                        th:value="${statusOption}"
+                        th:text="${statusOption}">
+                    </option>
+                </select>
+                <span class="error" th:errors="*{status}"></span>
+            </div>
+
+            <button type="submit">Save beat</button>
+        </form>
+    </main>
+</body>
+</html>

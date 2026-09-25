@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Beats | ProducerHub</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <main>
+        <div class="page-header">
+            <div>
+                <h1>My Beats</h1>
+                <p>Organise and manage your beat catalogue.</p>
+            </div>
+
+            <a href="/beats/new">Add beat</a>
+        </div>
+
+        <p th:if="${beats.isEmpty()}">
+            You haven’t added any beats yet.
+        </p>
+
+        <table th:unless="${beats.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>BPM</th>
+                    <th>Key</th>
+                    <th>Genre</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="beat : ${beats}">
+                    <td th:text="${beat.title}">Beat title</td>
+                    <td th:text="${beat.bpm}">140</td>
+                    <td th:text="${beat.musicalKey}">C Minor</td>
+                    <td th:text="${beat.genre}">Trap</td>
+                    <td th:text="${beat.status}">AVAILABLE</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

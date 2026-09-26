@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Artists | ProducerHub</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <main>
+        <h1>My Artists</h1>
+        <p>Keep track of the artists you work with.</p>
+
+        <a th:href="@{/artists/new}">Add artist</a>
+
+        <p th:if="${#lists.isEmpty(artists)}">
+            You haven't added any artists yet.
+        </p>
+
+        <table th:unless="${#lists.isEmpty(artists)}">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="artist : ${artists}">
+                    <td th:text="${artist.name}">Artist name</td>
+                    <td th:text="${artist.email}">Email</td>
+                    <td th:text="${artist.notes}">Notes</td>
+                    <td>
+                        <a th:href="@{/artists/{id}/edit(id=${artist.id})}">Edit</a>
+                        <a th:href="@{/artists/{id}/delete(id=${artist.id})}">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

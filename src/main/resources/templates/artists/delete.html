@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delete Artist | ProducerHub</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <main>
+        <h1>Delete artist?</h1>
+        <p>
+            Are you sure you want to delete
+            <strong th:text="${artist.name}">this artist</strong>?
+        </p>
+
+        <form th:action="@{/artists/{id}/delete(id=${artist.id})}" method="post">
+            <button type="submit">Yes, delete artist</button>
+            <a th:href="@{/artists}">Cancel</a>
+        </form>
+    </main>
+</body>
+</html>

@@ -104,4 +104,27 @@ public class LicenseService {
                 .filter(price -> price != null)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public void updateLicense(
+            Long id,
+            Long beatId,
+            Long artistId,
+            String licenseType,
+            BigDecimal price
+    ) {
+        License license = getLicenseById(id);
+
+        Beat beat = beatRepository.findById(beatId)
+                .orElseThrow(() -> new IllegalArgumentException("Beat not found: " + beatId));
+
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new IllegalArgumentException("Artist not found: " + artistId));
+
+        license.setBeat(beat);
+        license.setArtist(artist);
+        license.setLicenseType(licenseType);
+        license.setPrice(price);
+
+        licenseRepository.save(license);
+    }
 }

@@ -53,6 +53,7 @@
                     </td>
                     <td th:text="${license.licensedAt}">Date</td>
                     <td>
+                        <a th:href="@{/licenses/{id}/edit(id=${license.id})}">Edit</a>
                         <a th:href="@{/licenses/{id}/delete(id=${license.id})}">Delete</a>
                     </td>
                 </tr>

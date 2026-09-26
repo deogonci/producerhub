@@ -66,4 +66,24 @@ public class LicenseController {
         licenseService.setPaid(id, false);
         return "redirect:/licenses";
     }
+
+    @GetMapping("/licenses/{id}/edit")
+    public String showEditLicenseForm(@PathVariable Long id, Model model) {
+        model.addAttribute("license", licenseService.getLicenseById(id));
+        model.addAttribute("beats", licenseService.getAllBeats());
+        model.addAttribute("artists", licenseService.getAllArtists());
+        return "licenses/edit";
+    }
+
+    @PostMapping("/licenses/{id}/edit")
+    public String updateLicense(
+            @PathVariable Long id,
+            @RequestParam Long beatId,
+            @RequestParam Long artistId,
+            @RequestParam String licenseType,
+            @RequestParam BigDecimal price
+    ) {
+        licenseService.updateLicense(id, beatId, artistId, licenseType, price);
+        return "redirect:/licenses";
+    }
 }

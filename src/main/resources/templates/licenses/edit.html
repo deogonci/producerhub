@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Licence | ProducerHub</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <main>
+        <h1>Edit Licence</h1>
+
+        <form th:action="@{/licenses/{id}/edit(id=${license.id})}" method="post">
+            <div>
+                <label for="beatId">Beat</label>
+                <select id="beatId" name="beatId" required>
+                    <option th:each="beat : ${beats}"
+                            th:value="${beat.id}"
+                            th:text="${beat.title}"
+                            th:selected="${beat.id == license.beat.id}">
+                        Beat title
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="artistId">Artist</label>
+                <select id="artistId" name="artistId" required>
+                    <option th:each="artist : ${artists}"
+                            th:value="${artist.id}"
+                            th:text="${artist.name}"
+                            th:selected="${artist.id == license.artist.id}">
+                        Artist name
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="licenseType">Licence type</label>
+                <input id="licenseType" name="licenseType" type="text"
+                       th:value="${license.licenseType}" required>
+            </div>
+
+            <div>
+                <label for="price">Price (€)</label>
+                <input id="price" name="price" type="number" min="0" step="0.01"
+                       th:value="${license.price}" required>
+            </div>
+
+            <button type="submit">Save changes</button>
+            <a th:href="@{/licenses}">Cancel</a>
+        </form>
+    </main>
+</body>
+</html>

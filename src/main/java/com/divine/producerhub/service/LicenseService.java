@@ -90,4 +90,18 @@ public class LicenseService {
                 .filter(price -> price != null)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public void setPaid(Long id, boolean paid) {
+        License license = getLicenseById(id);
+        license.setPaid(paid);
+        licenseRepository.save(license);
+    }
+
+    public BigDecimal getReceivedRevenue() {
+        return licenseRepository.findAll().stream()
+                .filter(license -> Boolean.TRUE.equals(license.getPaid()))
+                .map(License::getPrice)
+                .filter(price -> price != null)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }

@@ -31,6 +31,7 @@ public class HomeController {
         model.addAttribute("artistCount", artistService.countArtists());
         model.addAttribute("licenseCount", licenseService.countLicenses());
         model.addAttribute("totalRevenue", licenseService.getTotalRevenue());
+        model.addAttribute("receivedRevenue", licenseService.getReceivedRevenue());
 
         model.addAttribute(
                 "availableBeats",

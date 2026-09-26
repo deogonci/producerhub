@@ -54,4 +54,16 @@ public class LicenseController {
         licenseService.deleteLicense(id);
         return "redirect:/licenses";
     }
+
+    @PostMapping("/licenses/{id}/paid")
+    public String markPaid(@PathVariable Long id) {
+        licenseService.setPaid(id, true);
+        return "redirect:/licenses";
+    }
+
+    @PostMapping("/licenses/{id}/unpaid")
+    public String markUnpaid(@PathVariable Long id) {
+        licenseService.setPaid(id, false);
+        return "redirect:/licenses";
+    }
 }

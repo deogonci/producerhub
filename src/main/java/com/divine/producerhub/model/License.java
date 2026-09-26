@@ -34,6 +34,7 @@ public class License {
     private BigDecimal price;
 
     private LocalDate licensedAt;
+    private Boolean paid = false;
 
     public License() {
     }
@@ -84,5 +85,13 @@ public class License {
 
     public void setLicensedAt(LocalDate licensedAt) {
         this.licensedAt = licensedAt;
+    }
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
     }
 }

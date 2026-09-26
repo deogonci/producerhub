@@ -47,6 +47,8 @@ public class LicenseService {
             String licenseType,
             BigDecimal price
     ) {
+        validateLicense(licenseType, price);
+
         Beat beat = beatRepository.findById(beatId)
                 .orElseThrow(() -> new IllegalArgumentException("Beat not found: " + beatId));
 
@@ -112,6 +114,8 @@ public class LicenseService {
             String licenseType,
             BigDecimal price
     ) {
+        validateLicense(licenseType, price);
+
         License license = getLicenseById(id);
 
         Beat beat = beatRepository.findById(beatId)
@@ -126,5 +130,15 @@ public class LicenseService {
         license.setPrice(price);
 
         licenseRepository.save(license);
+    }
+
+    private void validateLicense(String licenseType, BigDecimal price) {
+        if (licenseType == null || licenseType.isBlank()) {
+            throw new IllegalArgumentException("Enter a licence type.");
+        }
+
+        if (price == null || price.signum() < 0) {
+            throw new IllegalArgumentException("Price must be zero or more.");
+        }
     }
 }

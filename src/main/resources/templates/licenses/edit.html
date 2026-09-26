@@ -9,6 +9,7 @@
 <body>
     <main>
         <h1>Edit Licence</h1>
+        <p th:if="${error}" th:text="${error}"></p>
 
         <form th:action="@{/licenses/{id}/edit(id=${license.id})}" method="post">
             <div>

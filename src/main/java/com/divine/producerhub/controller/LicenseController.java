@@ -37,10 +37,18 @@ public class LicenseController {
             @RequestParam Long beatId,
             @RequestParam Long artistId,
             @RequestParam String licenseType,
-            @RequestParam BigDecimal price
+            @RequestParam BigDecimal price,
+            Model model
     ) {
-        licenseService.createLicense(beatId, artistId, licenseType, price);
-        return "redirect:/licenses";
+        try {
+            licenseService.createLicense(beatId, artistId, licenseType, price);
+            return "redirect:/licenses";
+        } catch (IllegalArgumentException exception) {
+            model.addAttribute("error", exception.getMessage());
+            model.addAttribute("beats", licenseService.getAllBeats());
+            model.addAttribute("artists", licenseService.getAllArtists());
+            return "licenses/form";
+        }
     }
 
     @GetMapping("/licenses/{id}/delete")
@@ -81,9 +89,18 @@ public class LicenseController {
             @RequestParam Long beatId,
             @RequestParam Long artistId,
             @RequestParam String licenseType,
-            @RequestParam BigDecimal price
+            @RequestParam BigDecimal price,
+            Model model
     ) {
-        licenseService.updateLicense(id, beatId, artistId, licenseType, price);
-        return "redirect:/licenses";
+        try {
+            licenseService.updateLicense(id, beatId, artistId, licenseType, price);
+            return "redirect:/licenses";
+        } catch (IllegalArgumentException exception) {
+            model.addAttribute("error", exception.getMessage());
+            model.addAttribute("license", licenseService.getLicenseById(id));
+            model.addAttribute("beats", licenseService.getAllBeats());
+            model.addAttribute("artists", licenseService.getAllArtists());
+            return "licenses/edit";
+        }
     }
 }

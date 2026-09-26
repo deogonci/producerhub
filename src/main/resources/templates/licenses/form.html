@@ -9,6 +9,7 @@
 <body>
     <main>
         <h1>Record Licence</h1>
+        <p th:if="${error}" th:text="${error}"></p>
 
         <p th:if="${#lists.isEmpty(beats)}">
             Add a beat before recording a licence.

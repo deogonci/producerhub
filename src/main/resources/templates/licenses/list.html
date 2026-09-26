@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Licences | ProducerHub</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <main>
+        <h1>Licences</h1>
+        <p>See which artists have licensed your beats.</p>
+
+        <a th:href="@{/licenses/new}">Record licence</a>
+
+        <p th:if="${#lists.isEmpty(licenses)}">
+            You haven't recorded any licences yet.
+        </p>
+
+        <table th:unless="${#lists.isEmpty(licenses)}">
+            <thead>
+                <tr>
+                    <th>Beat</th>
+                    <th>Artist</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="license : ${licenses}">
+                    <td th:text="${license.beat.title}">Beat</td>
+                    <td th:text="${license.artist.name}">Artist</td>
+                    <td th:text="${license.licenseType}">Type</td>
+                    <td th:text="${license.price}">Price</td>
+                    <td th:text="${license.licensedAt}">Date</td>
+                    <td>
+                        <a th:href="@{/licenses/{id}/delete(id=${license.id})}">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

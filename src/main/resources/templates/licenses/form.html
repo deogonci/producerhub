@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Record Licence | ProducerHub</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <main>
+        <h1>Record Licence</h1>
+
+        <p th:if="${#lists.isEmpty(beats)}">
+            Add a beat before recording a licence.
+        </p>
+        <p th:if="${#lists.isEmpty(artists)}">
+            Add an artist before recording a licence.
+        </p>
+
+        <form th:if="${!#lists.isEmpty(beats) and !#lists.isEmpty(artists)}"
+              th:action="@{/licenses}" method="post">
+
+            <div>
+                <label for="beatId">Beat</label>
+                <select id="beatId" name="beatId" required>
+                    <option value="">Choose a beat</option>
+                    <option th:each="beat : ${beats}"
+                            th:value="${beat.id}"
+                            th:text="${beat.title}">Beat title</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="artistId">Artist</label>
+                <select id="artistId" name="artistId" required>
+                    <option value="">Choose an artist</option>
+                    <option th:each="artist : ${artists}"
+                            th:value="${artist.id}"
+                            th:text="${artist.name}">Artist name</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="licenseType">Licence type</label>
+                <input id="licenseType" name="licenseType"
+                       type="text" placeholder="e.g. Basic or Exclusive" required>
+            </div>
+
+            <div>
+                <label for="price">Price (€)</label>
+                <input id="price" name="price" type="number"
+                       min="0" step="0.01" required>
+            </div>
+
+            <button type="submit">Save licence</button>
+            <a th:href="@{/licenses}">Cancel</a>
+        </form>
+    </main>
+</body>
+</html>

@@ -31,4 +31,8 @@ public class ArtistService {
     public void deleteArtist(Long id) {
         artistRepository.deleteById(id);
     }
+
+    public long countArtists() {
+        return artistRepository.count();
+    }
 }

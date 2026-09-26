@@ -14,19 +14,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import com.divine.producerhub.service.LicenseService;
 
 @Controller
 public class BeatController {
 
     private final BeatService beatService;
     private final FileStorageService fileStorageService;
+    private final LicenseService licenseService;
 
     public BeatController(
             BeatService beatService,
-            FileStorageService fileStorageService
+            FileStorageService fileStorageService,
+            LicenseService licenseService
     ) {
         this.beatService = beatService;
         this.fileStorageService = fileStorageService;
+        this.licenseService = licenseService;
     }
 
     @GetMapping("/beats")
@@ -116,14 +120,18 @@ public class BeatController {
             Model model
     ) {
         model.addAttribute("beat", beatService.getBeatById(id));
+        model.addAttribute("hasLicenses", licenseService.hasLicensesForBeat(id));
 
         return "beats/delete";
     }
 
     @PostMapping("/beats/{id}/delete")
     public String deleteBeat(@PathVariable Long id) {
-        beatService.deleteBeat(id);
+        if (licenseService.hasLicensesForBeat(id)) {
+            return "redirect:/beats/" + id + "/delete";
+        }
 
+        beatService.deleteBeat(id);
         return "redirect:/beats";
     }
 

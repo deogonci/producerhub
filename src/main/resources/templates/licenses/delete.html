@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delete Licence | ProducerHub</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <main>
+        <h1>Delete licence?</h1>
+
+        <p>
+            Remove the licence for
+            <strong th:text="${license.beat.title}">beat</strong>
+            recorded for
+            <strong th:text="${license.artist.name}">artist</strong>?
+        </p>
+
+        <form th:action="@{/licenses/{id}/delete(id=${license.id})}" method="post">
+            <button type="submit">Yes, delete licence</button>
+            <a th:href="@{/licenses}">Cancel</a>
+        </form>
+    </main>
+</body>
+</html>

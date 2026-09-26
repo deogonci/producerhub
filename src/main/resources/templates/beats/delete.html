@@ -22,6 +22,12 @@
 
         <p>This action cannot be undone.</p>
 
+        <p th:if="${hasLicenses}">
+            This beat has recorded licences. Delete those licences before deleting
+            <strong th:text="${beat.title}">this beat</strong>.
+            <a th:href="@{/licenses}">View licences</a>
+        </p>
+
         <form
             method="post"
             th:action="@{/beats/{id}/delete(id=${beat.id})}">

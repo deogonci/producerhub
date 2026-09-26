@@ -9,15 +9,25 @@
 <body>
     <main>
         <h1>Delete artist?</h1>
-        <p>
-            Are you sure you want to delete
-            <strong th:text="${artist.name}">this artist</strong>?
+
+        <p th:if="${hasLicenses}">
+            This artist has recorded licences. Delete those licences before deleting
+            <strong th:text="${artist.name}">this artist</strong>.
         </p>
 
-        <form th:action="@{/artists/{id}/delete(id=${artist.id})}" method="post">
-            <button type="submit">Yes, delete artist</button>
-            <a th:href="@{/artists}">Cancel</a>
-        </form>
+        <div th:unless="${hasLicenses}">
+            <p>
+                Are you sure you want to delete
+                <strong th:text="${artist.name}">this artist</strong>?
+            </p>
+
+            <form th:action="@{/artists/{id}/delete(id=${artist.id})}" method="post">
+                <button type="submit">Yes, delete artist</button>
+            </form>
+        </div>
+
+        <a th:href="@{/artists}">Back to artists</a>
+        <a th:if="${hasLicenses}" th:href="@{/licenses}">View licences</a>
     </main>
 </body>
 </html>

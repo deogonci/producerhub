@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>ProducerHub</title>
-
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 
@@ -20,6 +18,12 @@
             <a href="/beats">View my beats</a>
         </div>
 
+        <nav aria-label="ProducerHub sections">
+            <a th:href="@{/beats}">Beats</a>
+            <a th:href="@{/artists}">Artists</a>
+            <a th:href="@{/licenses}">Licences</a>
+        </nav>
+
         <section class="stats-grid">
             <article class="stat-card">
                 <span>Total beats</span>
@@ -32,13 +36,28 @@
             </article>
 
             <article class="stat-card">
-                <span>Licensed</span>
+                <span>Licensed beats</span>
                 <strong th:text="${licensedBeats}">0</strong>
             </article>
 
             <article class="stat-card">
                 <span>Sold</span>
                 <strong th:text="${soldBeats}">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span>Artists</span>
+                <strong th:text="${artistCount}">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span>Recorded licences</span>
+                <strong th:text="${licenseCount}">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <span>Licence revenue</span>
+                <strong th:text="|€${totalRevenue}|">€0</strong>
             </article>
         </section>
     </main>

@@ -12,13 +12,15 @@
 </head>
 
 <body>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
     <main class="form-page">
         <a class="back-link" href="/beats">← Back to beats</a>
 
+        <span class="eyebrow">Catalogue / Beat details</span>
         <h1 th:text="${pageTitle}">Beat Form</h1>
-        <p>Enter the information for your new beat.</p>
+        <p>Add the details that make this beat easy to find later.</p>
 
-        <form method="post" enctype="multipart/form-data" th:action="${formAction}" th:object="${beat}">
+        <form class="form-card" method="post" enctype="multipart/form-data" th:action="${formAction}" th:object="${beat}">
             <div class="form-group">
                 <label for="title">Title</label>
 
@@ -93,7 +95,7 @@
                 <span class="error" th:errors="*{status}"></span>
             </div>
 
-            <button type="submit">Save beat</button>
+            <div class="form-actions"><button type="submit">Save beat</button><a th:href="@{/beats}">Cancel</a></div>
         </form>
     </main>
 </body>

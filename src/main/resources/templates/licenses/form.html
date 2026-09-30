@@ -7,9 +7,13 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-    <main>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
+    <main class="form-page">
+        <a class="back-link" th:href="@{/licenses}">← Back to licences</a>
+        <span class="eyebrow">Business / New deal</span>
         <h1>Record Licence</h1>
-        <p th:if="${error}" th:text="${error}"></p>
+        <p>Connect an artist to a beat and record what they paid.</p>
+        <p class="error-message" role="alert" th:if="${error}" th:text="${error}"></p>
 
         <p th:if="${#lists.isEmpty(beats)}">
             Add a beat before recording a licence.
@@ -18,7 +22,7 @@
             Add an artist before recording a licence.
         </p>
 
-        <form th:if="${!#lists.isEmpty(beats) and !#lists.isEmpty(artists)}"
+        <form class="form-card" th:if="${!#lists.isEmpty(beats) and !#lists.isEmpty(artists)}"
               th:action="@{/licenses}" method="post">
 
             <div>
@@ -27,6 +31,7 @@
                     <option value="">Choose a beat</option>
                     <option th:each="beat : ${beats}"
                             th:value="${beat.id}"
+                            th:selected="${beat.id == beatId}"
                             th:text="${beat.title}">Beat title</option>
                 </select>
             </div>
@@ -37,6 +42,7 @@
                     <option value="">Choose an artist</option>
                     <option th:each="artist : ${artists}"
                             th:value="${artist.id}"
+                            th:selected="${artist.id == artistId}"
                             th:text="${artist.name}">Artist name</option>
                 </select>
             </div>
@@ -44,17 +50,17 @@
             <div>
                 <label for="licenseType">Licence type</label>
                 <input id="licenseType" name="licenseType"
-                       type="text" placeholder="e.g. Basic or Exclusive" required>
+                       type="text" placeholder="e.g. Basic or Exclusive"
+                       th:value="${licenseType}" required>
             </div>
 
             <div>
                 <label for="price">Price (€)</label>
                 <input id="price" name="price" type="number"
-                       min="0" step="0.01" required>
+                       min="0" step="0.01" th:value="${price}" required>
             </div>
 
-            <button type="submit">Save licence</button>
-            <a th:href="@{/licenses}">Cancel</a>
+            <div class="form-actions"><button type="submit">Save licence</button><a th:href="@{/licenses}">Cancel</a></div>
         </form>
     </main>
 </body>

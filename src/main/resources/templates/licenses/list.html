@@ -7,17 +7,29 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
     <main>
-        <h1>Licences</h1>
-        <p>See which artists have licensed your beats.</p>
+        <div class="page-header">
+            <div><span class="eyebrow">Business / Licences</span><h1>Licences</h1><p>Keep every deal and payment in view.</p></div>
+            <div class="page-actions">
+                <a class="button button-secondary" th:href="@{/licenses/export(payment=${payment})}">↓ Export CSV</a>
+                <a class="button" th:href="@{/licenses/new}">+ Record licence</a>
+            </div>
+        </div>
 
-        <a th:href="@{/licenses/new}">Record licence</a>
+        <nav class="filter-nav" aria-label="Filter licences by payment">
+            <a th:href="@{/licenses}" th:classappend="${payment == 'all'} ? 'selected' : ''">All</a>
+            <a th:href="@{/licenses(payment='paid')}" th:classappend="${payment == 'paid'} ? 'selected' : ''">Paid</a>
+            <a th:href="@{/licenses(payment='unpaid')}" th:classappend="${payment == 'unpaid'} ? 'selected' : ''">Unpaid</a>
+        </nav>
 
-        <p th:if="${#lists.isEmpty(licenses)}">
-            You haven't recorded any licences yet.
-        </p>
+        <div class="empty-state" th:if="${#lists.isEmpty(licenses)}">
+            <h2>No licences in this view</h2><p>Record a deal or switch to another payment filter.</p>
+            <a class="button" th:href="@{/licenses/new}">+ Record a licence</a>
+        </div>
 
-        <table th:unless="${#lists.isEmpty(licenses)}">
+        <div class="table-shell" th:unless="${#lists.isEmpty(licenses)}">
+        <table>
             <thead>
                 <tr>
                     <th>Beat</th>
@@ -34,10 +46,10 @@
                     <td th:text="${license.beat.title}">Beat</td>
                     <td th:text="${license.artist.name}">Artist</td>
                     <td th:text="${license.licenseType}">Type</td>
-                    <td th:text="${license.price}">Price</td>
+                    <td th:text="|€${license.price}|">€0.00</td>
                     <td>
-                        <span th:if="${license.paid == true}">Paid</span>
-                         <span th:unless="${license.paid == true}">Unpaid</span>
+                        <span class="status-pill paid" th:if="${license.paid == true}">Paid</span>
+                        <span class="status-pill unpaid" th:unless="${license.paid == true}">Unpaid</span>
 
                         <form th:unless="${license.paid == true}"
                               th:action="@{/licenses/{id}/paid(id=${license.id})}"
@@ -54,11 +66,12 @@
                     <td th:text="${license.licensedAt}">Date</td>
                     <td>
                         <a th:href="@{/licenses/{id}/edit(id=${license.id})}">Edit</a>
-                        <a th:href="@{/licenses/{id}/delete(id=${license.id})}">Delete</a>
+                        <a class="delete-link" th:href="@{/licenses/{id}/delete(id=${license.id})}">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </div>
     </main>
 </body>
 </html>

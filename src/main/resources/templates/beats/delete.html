@@ -10,31 +10,34 @@
 </head>
 
 <body>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
     <main class="form-page">
         <a class="back-link" href="/beats">← Back to beats</a>
-
+        <span class="eyebrow">Catalogue / Confirm action</span>
         <h1>Delete Beat</h1>
-
-        <p>
+        <div class="confirm-card">
+        <p th:unless="${hasLicenses}">
             Are you sure you want to delete
             <strong th:text="${beat.title}">this beat</strong>?
         </p>
 
-        <p>This action cannot be undone.</p>
+        <p th:unless="${hasLicenses}">This action cannot be undone.</p>
 
         <p th:if="${hasLicenses}">
             This beat has recorded licences. Delete those licences before deleting
             <strong th:text="${beat.title}">this beat</strong>.
-            <a th:href="@{/licenses}">View licences</a>
         </p>
+        <a class="button button-secondary" th:if="${hasLicenses}" th:href="@{/licenses}">View licences</a>
 
-        <form
+        <form th:unless="${hasLicenses}"
             method="post"
             th:action="@{/beats/{id}/delete(id=${beat.id})}">
             <button class="delete-button" type="submit">
                 Delete beat
             </button>
+            <a class="button button-secondary" th:href="@{/beats}">Cancel</a>
         </form>
+        </div>
     </main>
 </body>
 </html>

@@ -10,34 +10,46 @@
 </head>
 
 <body>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
     <main>
         <div class="page-header">
             <div>
+                <span class="eyebrow">Catalogue / Beats</span>
                 <h1>My Beats</h1>
                 <p>Organise and manage your beat catalogue.</p>
             </div>
-
-            <a href="/beats/new">Add beat</a>
+            <a class="button" th:href="@{/beats/new}">+ Add beat</a>
         </div>
 
         <form class="search-form" method="get" action="/beats">
             <input
                 type="search"
                 name="search"
+                aria-label="Search beats by title or genre"
                 placeholder="Search by title or genre"
                 th:value="${search}"
             >
+            <select name="status" aria-label="Filter beats by status">
+                <option value="">All statuses</option>
+                <option th:each="option : ${statuses}"
+                        th:value="${option}"
+                        th:text="${option}"
+                        th:selected="${option == selectedStatus}">Available</option>
+            </select>
 
             <button type="submit">Search</button>
 
             <a class="clear-link" href="/beats">Clear</a>
         </form>
 
-        <p th:if="${beats.isEmpty()}">
-            No beats matched your search.
-        </p>
+        <div class="empty-state" th:if="${beats.isEmpty()}">
+            <h2 th:text="${(search == null or search.isBlank()) and selectedStatus == null ? 'Your catalogue starts here' : 'No matching beats'}">No beats</h2>
+            <p th:text="${(search == null or search.isBlank()) and selectedStatus == null ? 'Add your first beat to start building your catalogue.' : 'Try a different search or status.'}">No beats found.</p>
+            <a th:if="${(search == null or search.isBlank()) and selectedStatus == null}" class="button" th:href="@{/beats/new}">+ Add your first beat</a>
+        </div>
 
-        <table th:unless="${beats.isEmpty()}">
+        <div class="table-shell" th:unless="${beats.isEmpty()}">
+        <table>
             <thead>
                 <tr>
                     <th>Title</th>
@@ -56,7 +68,7 @@
                     <td th:text="${beat.bpm}">140</td>
                     <td th:text="${beat.musicalKey}">C Minor</td>
                     <td th:text="${beat.genre}">Trap</td>
-                    <td th:text="${beat.status}">AVAILABLE</td>
+                    <td><span class="status-pill" th:classappend="${beat.status.name().toLowerCase()}" th:text="${beat.status}">AVAILABLE</span></td>
 
                     <td>
                         <a
@@ -89,6 +101,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
     </main>
 </body>
 </html>

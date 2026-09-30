@@ -7,9 +7,12 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-    <main>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
+    <main class="form-page">
+        <a class="back-link" th:href="@{/artists}">← Back to artists</a>
+        <span class="eyebrow">Network / Confirm action</span>
         <h1>Delete artist?</h1>
-
+        <div class="confirm-card">
         <p th:if="${hasLicenses}">
             This artist has recorded licences. Delete those licences before deleting
             <strong th:text="${artist.name}">this artist</strong>.
@@ -22,12 +25,13 @@
             </p>
 
             <form th:action="@{/artists/{id}/delete(id=${artist.id})}" method="post">
-                <button type="submit">Yes, delete artist</button>
+                <button class="delete-button" type="submit">Yes, delete artist</button>
             </form>
         </div>
 
-        <a th:href="@{/artists}">Back to artists</a>
-        <a th:if="${hasLicenses}" th:href="@{/licenses}">View licences</a>
+        <a class="button button-secondary" th:href="@{/artists}">Cancel</a>
+        <a class="button button-secondary" th:if="${hasLicenses}" th:href="@{/licenses}">View licences</a>
+        </div>
     </main>
 </body>
 </html>

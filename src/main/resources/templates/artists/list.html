@@ -7,17 +7,18 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
     <main>
-        <h1>My Artists</h1>
-        <p>Keep track of the artists you work with.</p>
-
-        <a th:href="@{/artists/new}">Add artist</a>
-
-        <p th:if="${#lists.isEmpty(artists)}">
-            You haven't added any artists yet.
-        </p>
-
-        <table th:unless="${#lists.isEmpty(artists)}">
+        <div class="page-header">
+            <div><span class="eyebrow">Network / Artists</span><h1>My Artists</h1><p>Keep track of the artists you work with.</p></div>
+            <a class="button" th:href="@{/artists/new}">+ Add artist</a>
+        </div>
+        <div class="empty-state" th:if="${#lists.isEmpty(artists)}">
+            <h2>No artists yet</h2><p>Save the people you collaborate with here.</p>
+            <a class="button" th:href="@{/artists/new}">+ Add your first artist</a>
+        </div>
+        <div class="table-shell" th:unless="${#lists.isEmpty(artists)}">
+        <table>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -33,11 +34,12 @@
                     <td th:text="${artist.notes}">Notes</td>
                     <td>
                         <a th:href="@{/artists/{id}/edit(id=${artist.id})}">Edit</a>
-                        <a th:href="@{/artists/{id}/delete(id=${artist.id})}">Delete</a>
+                        <a class="delete-link" th:href="@{/artists/{id}/delete(id=${artist.id})}">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </div>
     </main>
 </body>
 </html>

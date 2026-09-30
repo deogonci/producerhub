@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add Artist | ProducerHub</title>
+    <title th:text="${artist.id == null ? 'Add Artist | ProducerHub' : 'Edit Artist | ProducerHub'}">Artist | ProducerHub</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-    <main>
-        <h1>Add Artist</h1>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
+    <main class="form-page">
+        <a class="back-link" th:href="@{/artists}">← Back to artists</a>
+        <span class="eyebrow">Network / Artist details</span>
+        <h1 th:text="${artist.id == null ? 'Add Artist' : 'Edit Artist'}">Artist</h1>
+        <p>Keep your collaborators and their details together.</p>
 
-        <form th:action="@{/artists}" th:object="${artist}" method="post">
+        <form class="form-card" th:action="@{/artists}" th:object="${artist}" method="post">
             <input type="hidden" th:field="*{id}">
             <div>
                 <label for="name">Name</label>
@@ -27,8 +31,7 @@
                 <textarea id="notes" th:field="*{notes}" rows="5"></textarea>
             </div>
 
-            <button type="submit">Save artist</button>
-            <a th:href="@{/artists}">Cancel</a>
+            <div class="form-actions"><button type="submit">Save artist</button><a th:href="@{/artists}">Cancel</a></div>
         </form>
     </main>
 </body>

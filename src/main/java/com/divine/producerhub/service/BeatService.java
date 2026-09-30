@@ -3,9 +3,11 @@ package com.divine.producerhub.service;
 import com.divine.producerhub.model.Beat;
 import com.divine.producerhub.model.BeatStatus;
 import com.divine.producerhub.repository.BeatRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class BeatService {
@@ -52,16 +54,19 @@ public class BeatService {
         beatRepository.delete(beat);
     }
 
-    public List<Beat> searchBeats(String search) {
-        if (search == null || search.isBlank()) {
-            return getAllBeats();
-        }
+    public List<Beat> searchBeats(String search, BeatStatus status) {
+        String query = search == null ? "" : search.strip().toLowerCase(Locale.ROOT);
 
-        return beatRepository
-                .findByTitleContainingIgnoreCaseOrGenreContainingIgnoreCase(
-                        search,
-                        search
-                );
+        return beatRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
+                .filter(beat -> status == null || beat.getStatus() == status)
+                .filter(beat -> query.isEmpty()
+                        || containsIgnoreCase(beat.getTitle(), query)
+                        || containsIgnoreCase(beat.getGenre(), query))
+                .toList();
+    }
+
+    private boolean containsIgnoreCase(String value, String query) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(query);
     }
 
     public long countAllBeats() {

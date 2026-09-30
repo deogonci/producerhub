@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class LicenseService {
@@ -30,7 +31,17 @@ public class LicenseService {
     }
 
     public List<License> getAllLicenses() {
-        return licenseRepository.findAll();
+        return licenseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    public List<License> getLicenses(String payment) {
+        return getAllLicenses().stream()
+                .filter(license -> switch (payment) {
+                    case "paid" -> Boolean.TRUE.equals(license.getPaid());
+                    case "unpaid" -> !Boolean.TRUE.equals(license.getPaid());
+                    default -> true;
+                })
+                .toList();
     }
 
     public List<Beat> getAllBeats() {
@@ -107,6 +118,43 @@ public class LicenseService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal getOutstandingRevenue() {
+        return licenseRepository.findAll().stream()
+                .filter(license -> !Boolean.TRUE.equals(license.getPaid()))
+                .map(License::getPrice)
+                .filter(price -> price != null)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public String exportCsv(String payment) {
+        StringBuilder csv = new StringBuilder("Beat,Artist,Licence type,Price (EUR),Payment,Date\r\n");
+
+        for (License license : getLicenses(payment)) {
+            csv.append(String.join(",",
+                    csvCell(license.getBeat().getTitle()),
+                    csvCell(license.getArtist().getName()),
+                    csvCell(license.getLicenseType()),
+                    csvCell(license.getPrice() == null ? "" : license.getPrice().toPlainString()),
+                    csvCell(Boolean.TRUE.equals(license.getPaid()) ? "Paid" : "Unpaid"),
+                    csvCell(license.getLicensedAt() == null ? "" : license.getLicensedAt().toString())
+            )).append("\r\n");
+        }
+
+        return csv.toString();
+    }
+
+    private String csvCell(String value) {
+        String safe = value == null ? "" : value.replace("\r", " ").replace("\n", " ");
+        String trimmed = safe.stripLeading();
+
+        // Spreadsheet programs can evaluate cells beginning with these characters as formulas.
+        if (!trimmed.isEmpty() && "=+-@".indexOf(trimmed.charAt(0)) >= 0) {
+            safe = "'" + safe;
+        }
+
+        return "\"" + safe.replace("\"", "\"\"") + "\"";
+    }
+
     public void updateLicense(
             Long id,
             Long beatId,
@@ -139,6 +187,10 @@ public class LicenseService {
 
         if (price == null || price.signum() < 0) {
             throw new IllegalArgumentException("Price must be zero or more.");
+        }
+
+        if (price.scale() > 2 || price.compareTo(new BigDecimal("99999999.99")) > 0) {
+            throw new IllegalArgumentException("Enter a price up to €99,999,999.99 with no more than two decimal places.");
         }
     }
 }

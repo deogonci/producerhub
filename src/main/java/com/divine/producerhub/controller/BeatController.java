@@ -36,10 +36,13 @@ public class BeatController {
     @GetMapping("/beats")
     public String showBeats(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) BeatStatus status,
             Model model
     ) {
-        model.addAttribute("beats", beatService.searchBeats(search));
+        model.addAttribute("beats", beatService.searchBeats(search, status));
         model.addAttribute("search", search);
+        model.addAttribute("selectedStatus", status);
+        model.addAttribute("statuses", BeatStatus.values());
 
         return "beats/list";
     }

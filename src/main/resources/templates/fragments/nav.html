@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <nav th:fragment="siteNav" class="site-nav" aria-label="Main navigation">
+        <a th:href="@{/}" class="brand"><span class="brand-mark" aria-hidden="true">◉</span> ProducerHub</a>
+        <div class="nav-links">
+            <a th:href="@{/beats}">Beats</a>
+            <a th:href="@{/artists}">Artists</a>
+            <a th:href="@{/licenses}">Licences</a>
+        </div>
+    </nav>
+</body>
+</html>

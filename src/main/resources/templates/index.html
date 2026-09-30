@@ -8,24 +8,22 @@
 </head>
 
 <body>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
     <main>
-        <div class="page-header">
+        <header class="dashboard-hero">
             <div>
+                <span class="eyebrow">Your studio / Overview</span>
                 <h1>ProducerHub</h1>
-                <p>Manage your beats, artists, licences and sales.</p>
+                <p>Every beat, connection and licence in one place.</p>
             </div>
-
-            <a href="/beats">View my beats</a>
+            <a class="button" th:href="@{/beats/new}">+ Add a beat</a>
+        </header>
+        <div class="section-heading">
+            <h2>At a glance</h2>
+            <p>Your catalogue and sales, in numbers</p>
         </div>
-
-        <nav aria-label="ProducerHub sections">
-            <a th:href="@{/beats}">Beats</a>
-            <a th:href="@{/artists}">Artists</a>
-            <a th:href="@{/licenses}">Licences</a>
-        </nav>
-
         <section class="stats-grid">
-            <article class="stat-card">
+            <article class="stat-card accent">
                 <span>Total beats</span>
                 <strong th:text="${totalBeats}">0</strong>
             </article>
@@ -60,9 +58,13 @@
                 <strong th:text="|€${totalRevenue}|">€0</strong>
             </article>
 
-            <article class="stat-card">
+            <article class="stat-card accent">
                 <span>Payments received</span>
                 <strong th:text="|€${receivedRevenue}|">€0</strong>
+            </article>
+            <article class="stat-card warning">
+                <span>Awaiting payment</span>
+                <strong th:text="|€${outstandingRevenue}|">€0</strong>
             </article>
         </section>
     </main>

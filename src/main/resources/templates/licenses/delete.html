@@ -7,9 +7,12 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-    <main>
+    <div th:replace="~{fragments/nav :: siteNav}"></div>
+    <main class="form-page">
+        <a class="back-link" th:href="@{/licenses}">← Back to licences</a>
+        <span class="eyebrow">Business / Confirm action</span>
         <h1>Delete licence?</h1>
-
+        <div class="confirm-card">
         <p>
             Remove the licence for
             <strong th:text="${license.beat.title}">beat</strong>
@@ -18,9 +21,10 @@
         </p>
 
         <form th:action="@{/licenses/{id}/delete(id=${license.id})}" method="post">
-            <button type="submit">Yes, delete licence</button>
-            <a th:href="@{/licenses}">Cancel</a>
+            <button class="delete-button" type="submit">Yes, delete licence</button>
+            <a class="button button-secondary" th:href="@{/licenses}">Cancel</a>
         </form>
+        </div>
     </main>
 </body>
 </html>

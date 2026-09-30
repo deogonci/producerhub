@@ -1,6 +1,9 @@
 package com.divine.producerhub.controller;
 
 import com.divine.producerhub.service.LicenseService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 
 @Controller
 public class LicenseController {
@@ -20,9 +24,20 @@ public class LicenseController {
     }
 
     @GetMapping("/licenses")
-    public String showLicenses(Model model) {
-        model.addAttribute("licenses", licenseService.getAllLicenses());
+    public String showLicenses(@RequestParam(defaultValue = "all") String payment, Model model) {
+        model.addAttribute("licenses", licenseService.getLicenses(payment));
+        model.addAttribute("payment", payment);
         return "licenses/list";
+    }
+
+    @GetMapping("/licenses/export")
+    public ResponseEntity<byte[]> exportLicenses(@RequestParam(defaultValue = "all") String payment) {
+        // A UTF-8 BOM helps spreadsheet apps on Windows display artist names correctly.
+        byte[] file = ("\uFEFF" + licenseService.exportCsv(payment)).getBytes(StandardCharsets.UTF_8);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"producerhub-licenses.csv\"")
+                .contentType(MediaType.parseMediaType("text/csv;charset=UTF-8"))
+                .body(file);
     }
 
     @GetMapping("/licenses/new")
@@ -47,6 +62,10 @@ public class LicenseController {
             model.addAttribute("error", exception.getMessage());
             model.addAttribute("beats", licenseService.getAllBeats());
             model.addAttribute("artists", licenseService.getAllArtists());
+            model.addAttribute("beatId", beatId);
+            model.addAttribute("artistId", artistId);
+            model.addAttribute("licenseType", licenseType);
+            model.addAttribute("price", price);
             return "licenses/form";
         }
     }
@@ -100,6 +119,10 @@ public class LicenseController {
             model.addAttribute("license", licenseService.getLicenseById(id));
             model.addAttribute("beats", licenseService.getAllBeats());
             model.addAttribute("artists", licenseService.getAllArtists());
+            model.addAttribute("beatId", beatId);
+            model.addAttribute("artistId", artistId);
+            model.addAttribute("licenseType", licenseType);
+            model.addAttribute("price", price);
             return "licenses/edit";
         }
     }

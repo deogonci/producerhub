@@ -4,12 +4,28 @@ A local music producer dashboard built with Java 21, Spring Boot, Thymeleaf and 
 
 ## Features
 
-- Beat catalogue with BPM, key, genre, status, search and optional audio upload/playback.
+- Beat catalogue with BPM, key, genre, optional audio upload/playback, and combined search and status filters.
 - Artist contacts with add, edit and delete pages.
 - Licence records connecting a beat to an artist, with type, price, date and paid/unpaid status.
-- Licence filters for all, paid and unpaid records.
-- Dashboard with catalogue counts, recorded licence value and payments received.
+- Licence filters for all, paid and unpaid records, plus CSV export of the selected view.
+- Dashboard with catalogue counts, recorded licence value, payments received and outstanding payments.
 - Confirmation pages prevent deleting artists or beats that still have licences.
+
+## Screenshots
+
+The screenshots show example data.
+
+### Dashboard
+
+![ProducerHub dashboard with catalogue and payment totals](screenshots/dashboard.png)
+
+### Beat catalogue
+
+![Beat catalogue with search and status filtering](screenshots/beats.png)
+
+### Licences
+
+![Licence records with payment status and CSV export](screenshots/license.png)
 
 ## Run on Windows
 
@@ -62,11 +78,13 @@ The beat's `AVAILABLE`, `LICENSED` and `SOLD` status is edited manually. Recordi
 
 ## Build and tests
 
-With PostgreSQL running and `DB_PASSWORD` set:
+The tests use an in-memory H2 database, so PostgreSQL does not need to be running:
 
 ```powershell
 .\mvnw.cmd test
 .\mvnw.cmd package
 ```
+
+GitHub Actions runs the same Maven checks with Java 21 on pushes and pull requests to `main`.
 
 This project is intended for local use. Add authentication and production configuration before exposing it publicly.
